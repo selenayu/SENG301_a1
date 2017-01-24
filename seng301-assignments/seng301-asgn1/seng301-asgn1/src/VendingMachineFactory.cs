@@ -66,9 +66,15 @@ namespace seng301_asgn1 {
                 //testing only; remove later
                 else
                 {
+<<<<<<< HEAD
                     //Console.WriteLine("{0}", tempList[i]);
                     //Console.WriteLine(temp);
                     //Console.WriteLine(tempList[i]);
+=======
+                    Console.WriteLine("{0}", tempList[i]);
+                    Console.WriteLine(temp);
+                    Console.WriteLine(tempList[i]);
+>>>>>>> ebeedf04abe91a1d2cc27c80281bba172d36c264
                 }
 
                 temp = tempList[i];
@@ -127,6 +133,7 @@ namespace seng301_asgn1 {
             for (int i = 0; i < vm.coinKinds.Count; i++)
             {
                 coinChutes.Add(vm.coinKinds[i]);
+<<<<<<< HEAD
                 //Console.WriteLine(coinChutes[i]);
             }
 
@@ -142,6 +149,17 @@ namespace seng301_asgn1 {
             vm.setPopChutes(popChutes);
             vm.setCosts(popCosts);
 
+=======
+                Console.WriteLine(coinChutes[i]);
+            }
+
+            for (int i = 0; i < vm.selectionButtonCount; i++)
+            {
+                popChutes.Add(popNames[i]);
+                Console.WriteLine(popChutes[i]);
+            }
+
+>>>>>>> ebeedf04abe91a1d2cc27c80281bba172d36c264
         }
 
         public void loadCoins(int vmIndex, int coinKindIndex, List<Coin> coins) {
@@ -151,7 +169,11 @@ namespace seng301_asgn1 {
             List<int> coinsInChutes = new List<int>();
 
             //initialize number of coins in each chute to zero
+<<<<<<< HEAD
             for (int i = 0; i < vm.coinChutes.Count; i++)
+=======
+            for (int i = 0; i < vm.coinKinds.Count; i++)
+>>>>>>> ebeedf04abe91a1d2cc27c80281bba172d36c264
             {
                 coinsInChutes.Add(0);
             }
@@ -164,7 +186,10 @@ namespace seng301_asgn1 {
 
             //"add" coins to the specified chute
             coinsInChutes[coinKindIndex] = coinsInChutes[coinKindIndex] + coins.Count;
+<<<<<<< HEAD
             vm.setCoinNum(coinsInChutes);
+=======
+>>>>>>> ebeedf04abe91a1d2cc27c80281bba172d36c264
 
         }
 
@@ -175,7 +200,11 @@ namespace seng301_asgn1 {
             List<int> popsInChutes = new List<int>();
 
             //initialize number of pops in each chute to zero
+<<<<<<< HEAD
             for (int i = 0; i < vm.popChutes.Count; i++)
+=======
+            for (int i = 0; i < vm.selectionButtonCount; i++)
+>>>>>>> ebeedf04abe91a1d2cc27c80281bba172d36c264
             {
                 popsInChutes.Add(0);
             }
