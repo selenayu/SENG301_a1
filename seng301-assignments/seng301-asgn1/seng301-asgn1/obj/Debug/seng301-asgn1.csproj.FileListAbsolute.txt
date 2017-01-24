@@ -12,7 +12,6 @@ C:\Users\OWNER\Desktop\seng301-a1\seng301-asgn1\seng301-asgn1\obj\Debug\seng301-
 \\cs-fs01\Profiles\ug\selena.yu\Desktop\seng301-assignments\seng301-asgn1\seng301-asgn1\obj\Debug\seng301-asgn1.csprojResolveAssemblyReference.cache
 \\cs-fs01\Profiles\ug\selena.yu\Desktop\seng301-assignments\seng301-asgn1\seng301-asgn1\obj\Debug\seng301-asgn1.exe
 \\cs-fs01\Profiles\ug\selena.yu\Desktop\seng301-assignments\seng301-asgn1\seng301-asgn1\obj\Debug\seng301-asgn1.pdb
-<<<<<<< HEAD
 C:\Users\OWNER\Desktop\seng301_a1-master\seng301-assignments\seng301-asgn1\seng301-asgn1\bin\Debug\seng301-asgn1.exe.config
 C:\Users\OWNER\Desktop\seng301_a1-master\seng301-assignments\seng301-asgn1\seng301-asgn1\bin\Debug\seng301-asgn1.exe
 C:\Users\OWNER\Desktop\seng301_a1-master\seng301-assignments\seng301-asgn1\seng301-asgn1\bin\Debug\seng301-asgn1.pdb
@@ -20,5 +19,3 @@ C:\Users\OWNER\Desktop\seng301_a1-master\seng301-assignments\seng301-asgn1\seng3
 C:\Users\OWNER\Desktop\seng301_a1-master\seng301-assignments\seng301-asgn1\seng301-asgn1\obj\Debug\seng301-asgn1.exe
 C:\Users\OWNER\Desktop\seng301_a1-master\seng301-assignments\seng301-asgn1\seng301-asgn1\obj\Debug\seng301-asgn1.pdb
 C:\Users\OWNER\Desktop\seng301_a1-master\seng301-assignments\seng301-asgn1\seng301-asgn1\obj\Debug\seng301-asgn1.csprojResolveAssemblyReference.cache
-=======
->>>>>>> ebeedf04abe91a1d2cc27c80281bba172d36c264
