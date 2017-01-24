@@ -41,37 +41,41 @@ namespace seng301_asgn1 {
 
         public int createVendingMachine(List<int> coinKinds, int selectionButtonCount) {
 
-            coinKinds.Sort();
+            //create and use a sorted list for error testing
+            List<int> tempList = new List<int>(coinKinds);
+            tempList.Sort();
             int temp = -1;
 
             //testing only; remove later
-            Console.WriteLine("Accepted Coins: ");
+            //Console.WriteLine("Accepted Coins: ");
 
-            for (int i = 0; i < coinKinds.Count; i++)
+            for (int i = 0; i < tempList.Count; i++)
             {
                 //test for invalid (negative/zero) coin types
-                if (coinKinds[i] <= 0)
+                if (tempList[i] <= 0)
                 {
-                    throw new Exception("The coin value must be greater than 0. The argument passed was: " + coinKinds[i]);
+                    throw new Exception("The coin value must be greater than 0. The argument passed was: " + tempList[i]);
                 }
 
                 //test for non-unique coin types
-                else if (temp == coinKinds[i])
+                else if (temp == tempList[i])
                 {
-                    throw new Exception("The coin value must be unique. The argument " + coinKinds[i] + " already exists");
+                    throw new Exception("The coin value must be unique. The argument " + tempList[i] + " already exists");
                 }
 
                 //testing only; remove later
                 else
                 {
-                    Console.WriteLine("{0}", coinKinds[i]);
+                    //Console.WriteLine("{0}", tempList[i]);
+                    //Console.WriteLine(temp);
+                    //Console.WriteLine(tempList[i]);
                 }
 
-                temp = coinKinds[i];
+                temp = tempList[i];
             }
 
             //test for invalid (negative) number of buttons
-            if (selectionButtonCount < 0)
+            if (selectionButtonCount < 1)
             {
                 throw new Exception("The number of buttons must be greater than 0. The argument passed was: " + selectionButtonCount);
             }
@@ -79,7 +83,7 @@ namespace seng301_asgn1 {
             else
             {
                 //testing only; remove later
-                Console.WriteLine("Number of Buttons:" + selectionButtonCount);
+                //Console.WriteLine("Number of Buttons:" + selectionButtonCount);
 
                 //create vending machine if all parameters are valid
                 vmList.Add(new VendingMachine(coinKinds, selectionButtonCount));
@@ -92,6 +96,11 @@ namespace seng301_asgn1 {
         public void configureVendingMachine(int vmIndex, List<string> popNames, List<int> popCosts) {
 
             vm = vmList[vmIndex];
+
+            //create a list integers that records the value of the coin stored in coinChutes
+            List<int> coinChutes = new List<int>();
+            //create a list of strings that record the name of the pop stored in popChutes
+            List<String> popChutes = new List<String>();
 
             //test for negative/zero cost values
             for (int i = 0; i < popCosts.Count; i++)
@@ -114,10 +123,25 @@ namespace seng301_asgn1 {
                 throw new Exception("Cannot have more/less pop than buttons.");
             }
 
+            //configure coin types to individual coin chutes
+            for (int i = 0; i < vm.coinKinds.Count; i++)
+            {
+                coinChutes.Add(vm.coinKinds[i]);
+                //Console.WriteLine(coinChutes[i]);
+            }
+
+            vm.setCoinChutes(coinChutes);
+
+            //configure pop types to individual pop chutes
             for (int i = 0; i < vm.selectionButtonCount; i++)
             {
-                
+                popChutes.Add(popNames[i]);
+                //Console.WriteLine(popChutes[i]);
             }
+
+            vm.setPopChutes(popChutes);
+            vm.setCosts(popCosts);
+
         }
 
         public void loadCoins(int vmIndex, int coinKindIndex, List<Coin> coins) {
@@ -125,27 +149,22 @@ namespace seng301_asgn1 {
             vm = vmList[vmIndex];
             //create list for number of coins in each chute
             List<int> coinsInChutes = new List<int>();
-            //create list to keep track of the type of coin each chute contains
-            List<int> coinTypesinChutes = new List<int>();
 
-            //initialize number of coins and coin types in each chute to zero
-            for (int i = 0; i < vm.coinKinds.Count; i++)
+            //initialize number of coins in each chute to zero
+            for (int i = 0; i < vm.coinChutes.Count; i++)
             {
                 coinsInChutes.Add(0);
-                coinTypesinChutes.Add(0);
             }
 
             //test if there's invalid input for coinKindIndex
-            if (coinKindIndex > vm.coinKinds.Count || coinKindIndex < 0)
+            if (coinKindIndex > vm.coinChutes.Count || coinKindIndex < 0)
             {
                 throw new Exception("Coin kind index cannot be greater than number of coin types nor negative.");
             }
 
             //"add" coins to the specified chute
             coinsInChutes[coinKindIndex] = coinsInChutes[coinKindIndex] + coins.Count;
-
-            //records the coin type that was placed in the specified chute
-            coinTypesinChutes[coinKindIndex] = coins[0].Value;
+            vm.setCoinNum(coinsInChutes);
 
         }
 
@@ -154,35 +173,116 @@ namespace seng301_asgn1 {
             vm = vmList[vmIndex];
             //create list for number of pops in each chute
             List<int> popsInChutes = new List<int>();
-            //create list to keep track of the type of pop each chute contains
-            List<String> popTypesinChutes = new List<String>();
 
-            //initialize number of pops and pop types in each chute to zero and null
-            for (int i = 0; i < vm.selectionButtonCount; i++)
+            //initialize number of pops in each chute to zero
+            for (int i = 0; i < vm.popChutes.Count; i++)
             {
                 popsInChutes.Add(0);
-                popTypesinChutes.Add(null);
             }
 
             //test if there's invalid input for popKindIndex
-            if (popKindIndex > vm.selectionButtonCount || popKindIndex < 0)
+            if (popKindIndex > vm.popChutes.Count || popKindIndex < 0)
             {
                 throw new Exception("Pop kind index cannot be greater than number of pop types nor negative.");
             }
 
-            //"add" coins to the specified chute
+            //"add" pops to the specified chute
             popsInChutes[popKindIndex] = popsInChutes[popKindIndex] + pops.Count;
+            vm.setPopNum(popsInChutes);
 
-            //records the coin type that was placed in the specified chute
-            popTypesinChutes[popKindIndex] = pops[0].Name;
         }
 
         public void insertCoin(int vmIndex, Coin coin) {
-            // TODO: Implement
+
+            vm = vmList[vmIndex];
+
+            int i = 0;
+
+            //test if coin value is accepted
+            while (coin.Value != vm.coinKinds[i] && i < vm.coinKinds.Count)
+            {
+                i++;
+                //if end of list reached
+                if (i == vm.coinKinds.Count)
+                {
+                    //replace with dispense later
+                    throw new Exception("Unacceptable coin!");
+                }
+            }
+
+            //add accepted coin to credit
+            vm.addCredit(coin.Value);
         }
 
         public void pressButton(int vmIndex, int value) {
-            // TODO: Implement
+
+            vm = vmList[vmIndex];
+
+            if (value < 0 || value > vm.selectionButtonCount)
+            {
+                throw new Exception("Button index cannot be negative or bigger than number of avaliable buttons");
+            }
+
+            //case where no change is needed
+            //check to see if there's one or more pop left in that chute
+            if (vm.popsInChutes[value] > 0)
+            {
+                //case where no change is needed
+                if (vm.credit == vm.popCosts[value])
+                {
+                    vm.popsInChutes[value] = vm.popsInChutes[value] - 1;
+                    vm.vendPop(vm.popChutes[value]);
+                }
+
+                //case if change is needed
+                else if (vm.credit > vm.popCosts[value])
+                {
+                    //vend the pop
+                    vm.popsInChutes[value] = vm.popsInChutes[value] - 1;
+                    vm.vendPop(vm.popChutes[value]);
+
+                    //create and use a sorted list to find change
+                    List<int> tempList = new List<int>(vm.coinKinds);
+                    tempList.Sort();
+
+                    int change = vm.credit - vm.popCosts[value];
+                    int changeTemp = 0;
+                    int maxTemp = 0;
+                    //int i = 0;
+
+                   /* for(int i = 0; i < tempList.Count; i++)
+                    {
+                        for(int j = 0; j < tempList.Count; i++)
+                        {
+                            changeTemp = tempList[i] + tempList[j] ;
+
+                            if(changeTemp < change && changeTemp > maxTemp)
+                            {
+                                maxTemp = changeTemp;
+                            }
+                        }
+                    }
+
+                    //find the largest coin type that's less or equal to change 
+                    while(tempList[i] < change && i < tempList.Count - 1)
+                    {
+                        changeTemp = changeTemp + tempList[i];
+                        if(changeTemp > change && tempList[i] > changeTemp)
+                        {
+
+                        }
+                        i++;
+                        if(tempList[i] == change || changeTemp == change)
+                        {
+                            vm.change = change;
+                        }
+
+                    }*/
+
+
+                }
+
+            }
         }
 
         public List<Deliverable> extractFromDeliveryChute(int vmIndex) {
