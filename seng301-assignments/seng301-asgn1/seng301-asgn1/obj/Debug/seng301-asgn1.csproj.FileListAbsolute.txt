@@ -5,3 +5,10 @@ C:\Users\OWNER\Desktop\seng301-a1\seng301-asgn1\seng301-asgn1\bin\Debug\grammati
 C:\Users\OWNER\Desktop\seng301-a1\seng301-asgn1\seng301-asgn1\obj\Debug\seng301-asgn1.csprojResolveAssemblyReference.cache
 C:\Users\OWNER\Desktop\seng301-a1\seng301-asgn1\seng301-asgn1\obj\Debug\seng301-asgn1.exe
 C:\Users\OWNER\Desktop\seng301-a1\seng301-asgn1\seng301-asgn1\obj\Debug\seng301-asgn1.pdb
+\\cs-fs01\Profiles\ug\selena.yu\Desktop\seng301-assignments\seng301-asgn1\seng301-asgn1\bin\Debug\seng301-asgn1.exe.config
+\\cs-fs01\Profiles\ug\selena.yu\Desktop\seng301-assignments\seng301-asgn1\seng301-asgn1\bin\Debug\seng301-asgn1.exe
+\\cs-fs01\Profiles\ug\selena.yu\Desktop\seng301-assignments\seng301-asgn1\seng301-asgn1\bin\Debug\seng301-asgn1.pdb
+\\cs-fs01\Profiles\ug\selena.yu\Desktop\seng301-assignments\seng301-asgn1\seng301-asgn1\bin\Debug\grammatica-1.6.dll
+\\cs-fs01\Profiles\ug\selena.yu\Desktop\seng301-assignments\seng301-asgn1\seng301-asgn1\obj\Debug\seng301-asgn1.csprojResolveAssemblyReference.cache
+\\cs-fs01\Profiles\ug\selena.yu\Desktop\seng301-assignments\seng301-asgn1\seng301-asgn1\obj\Debug\seng301-asgn1.exe
+\\cs-fs01\Profiles\ug\selena.yu\Desktop\seng301-assignments\seng301-asgn1\seng301-asgn1\obj\Debug\seng301-asgn1.pdb

@@ -41,33 +41,37 @@ namespace seng301_asgn1 {
 
         public int createVendingMachine(List<int> coinKinds, int selectionButtonCount) {
 
-            coinKinds.Sort();
+            //create and use a sorted list for error testing
+            List<int> tempList = new List<int>(coinKinds);
+            tempList.Sort();
             int temp = -1;
 
             //testing only; remove later
             Console.WriteLine("Accepted Coins: ");
 
-            for (int i = 0; i < coinKinds.Count; i++)
+            for (int i = 0; i < tempList.Count; i++)
             {
                 //test for invalid (negative/zero) coin types
-                if (coinKinds[i] <= 0)
+                if (tempList[i] <= 0)
                 {
-                    throw new Exception("The coin value must be greater than 0. The argument passed was: " + coinKinds[i]);
+                    throw new Exception("The coin value must be greater than 0. The argument passed was: " + tempList[i]);
                 }
 
                 //test for non-unique coin types
-                else if (temp == coinKinds[i])
+                else if (temp == tempList[i])
                 {
-                    throw new Exception("The coin value must be unique. The argument " + coinKinds[i] + " already exists");
+                    throw new Exception("The coin value must be unique. The argument " + tempList[i] + " already exists");
                 }
 
                 //testing only; remove later
                 else
                 {
-                    Console.WriteLine("{0}", coinKinds[i]);
+                    Console.WriteLine("{0}", tempList[i]);
+                    Console.WriteLine(temp);
+                    Console.WriteLine(tempList[i]);
                 }
 
-                temp = coinKinds[i];
+                temp = tempList[i];
             }
 
             //test for invalid (negative) number of buttons
@@ -93,6 +97,11 @@ namespace seng301_asgn1 {
 
             vm = vmList[vmIndex];
 
+            //create a list integers that records the value of the coin stored in coinChutes
+            List<int> coinChutes = new List<int>();
+            //create a list of strings that record the name of the pop stored in popChutes
+            List<String> popChutes = new List<String>();
+
             //test for negative/zero cost values
             for (int i = 0; i < popCosts.Count; i++)
             {
@@ -114,10 +123,19 @@ namespace seng301_asgn1 {
                 throw new Exception("Cannot have more/less pop than buttons.");
             }
 
+            //configure coin types to individual coin chutes
+            for (int i = 0; i < vm.coinKinds.Count; i++)
+            {
+                coinChutes.Add(vm.coinKinds[i]);
+                Console.WriteLine(coinChutes[i]);
+            }
+
             for (int i = 0; i < vm.selectionButtonCount; i++)
             {
-                
+                popChutes.Add(popNames[i]);
+                Console.WriteLine(popChutes[i]);
             }
+
         }
 
         public void loadCoins(int vmIndex, int coinKindIndex, List<Coin> coins) {
@@ -125,14 +143,11 @@ namespace seng301_asgn1 {
             vm = vmList[vmIndex];
             //create list for number of coins in each chute
             List<int> coinsInChutes = new List<int>();
-            //create list to keep track of the type of coin each chute contains
-            List<int> coinTypesinChutes = new List<int>();
 
-            //initialize number of coins and coin types in each chute to zero
+            //initialize number of coins in each chute to zero
             for (int i = 0; i < vm.coinKinds.Count; i++)
             {
                 coinsInChutes.Add(0);
-                coinTypesinChutes.Add(0);
             }
 
             //test if there's invalid input for coinKindIndex
@@ -144,9 +159,6 @@ namespace seng301_asgn1 {
             //"add" coins to the specified chute
             coinsInChutes[coinKindIndex] = coinsInChutes[coinKindIndex] + coins.Count;
 
-            //records the coin type that was placed in the specified chute
-            coinTypesinChutes[coinKindIndex] = coins[0].Value;
-
         }
 
         public void loadPops(int vmIndex, int popKindIndex, List<Pop> pops) {
@@ -154,14 +166,11 @@ namespace seng301_asgn1 {
             vm = vmList[vmIndex];
             //create list for number of pops in each chute
             List<int> popsInChutes = new List<int>();
-            //create list to keep track of the type of pop each chute contains
-            List<String> popTypesinChutes = new List<String>();
 
-            //initialize number of pops and pop types in each chute to zero and null
+            //initialize number of pops in each chute to zero
             for (int i = 0; i < vm.selectionButtonCount; i++)
             {
                 popsInChutes.Add(0);
-                popTypesinChutes.Add(null);
             }
 
             //test if there's invalid input for popKindIndex
@@ -173,8 +182,6 @@ namespace seng301_asgn1 {
             //"add" coins to the specified chute
             popsInChutes[popKindIndex] = popsInChutes[popKindIndex] + pops.Count;
 
-            //records the coin type that was placed in the specified chute
-            popTypesinChutes[popKindIndex] = pops[0].Name;
         }
 
         public void insertCoin(int vmIndex, Coin coin) {
