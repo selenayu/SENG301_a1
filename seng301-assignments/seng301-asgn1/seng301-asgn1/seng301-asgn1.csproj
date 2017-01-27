@@ -67,8 +67,13 @@
   <ItemGroup>
     <None Include="App.config" />
     <None Include="test-scripts\T01-good-script" />
+    <None Include="test-scripts\T02-good-script1" />
+    <None Include="test-scripts\T03-good-script2" />
+    <None Include="test-scripts\T04-good-script3" />
     <None Include="test-scripts\U01-bad-script1" />
     <None Include="test-scripts\U02-bad-script2" />
+    <None Include="test-scripts\U03-bad-script3" />
+    <None Include="test-scripts\U04-bad-script4" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="test-scripts\README.txt" />

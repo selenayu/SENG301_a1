@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 
 using Frontend1;
 
@@ -63,7 +64,7 @@ namespace seng301_asgn1 {
                     throw new Exception("The coin value must be unique. The argument " + tempList[i] + " already exists");
                 }
 
-                //testing only; remove later
+
                 else
                 {
                     //Console.WriteLine("{0}", tempList[i]);
@@ -82,25 +83,26 @@ namespace seng301_asgn1 {
 
             else
             {
-                //testing only; remove later
-                //Console.WriteLine("Number of Buttons:" + selectionButtonCount);
-
                 //create vending machine if all parameters are valid
                 vmList.Add(new VendingMachine(coinKinds, selectionButtonCount));
             }
 
-            //Console.WriteLine("{0}", vmList.Count);
             return vmNum++;
         }
 
         public void configureVendingMachine(int vmIndex, List<string> popNames, List<int> popCosts) {
 
+            if (vmIndex > vmList.Count - 1)
+            {
+                throw new Exception("This vending machine doesn't exist!");
+            }
+
             vm = vmList[vmIndex];
 
-            //create a list integers that records the value of the coin stored in coinChutes
-            List<int> coinChutes = new List<int>();
-            //create a list of strings that record the name of the pop stored in popChutes
-            List<String> popChutes = new List<String>();
+            //create a list coins that records the value of the coin stored in coinChutes
+            List<List<Coin>> coinChutes = new List<List<Coin>>();
+            //create a list of pops that record the name of the pop stored in popChutes
+            List<List<Pop>> popChutes = new List<List<Pop>>();
 
             //test for negative/zero cost values
             for (int i = 0; i < popCosts.Count; i++)
@@ -123,10 +125,11 @@ namespace seng301_asgn1 {
                 throw new Exception("Cannot have more/less pop than buttons.");
             }
 
-            //configure coin types to individual coin chutes
+            //initialize lists of coins and configure coin types to individual coin chutes
             for (int i = 0; i < vm.coinKinds.Count; i++)
             {
-                coinChutes.Add(vm.coinKinds[i]);
+                List<Coin> sublist = new List<Coin>();
+                coinChutes.Add(sublist);
                 //Console.WriteLine(coinChutes[i]);
             }
 
@@ -135,18 +138,14 @@ namespace seng301_asgn1 {
             //configure pop types to individual pop chutes
             for (int i = 0; i < vm.selectionButtonCount; i++)
             {
-                popChutes.Add(popNames[i]);
+                List<Pop> sublist = new List<Pop>();
+                popChutes.Add(sublist);
                 //Console.WriteLine(popChutes[i]);
             }
 
             vm.setPopChutes(popChutes);
             vm.setCosts(popCosts);
 
-        }
-
-        public void loadCoins(int vmIndex, int coinKindIndex, List<Coin> coins) {
-
-            vm = vmList[vmIndex];
             //create list for number of coins in each chute
             List<int> coinsInChutes = new List<int>();
 
@@ -156,21 +155,6 @@ namespace seng301_asgn1 {
                 coinsInChutes.Add(0);
             }
 
-            //test if there's invalid input for coinKindIndex
-            if (coinKindIndex > vm.coinChutes.Count || coinKindIndex < 0)
-            {
-                throw new Exception("Coin kind index cannot be greater than number of coin types nor negative.");
-            }
-
-            //"add" coins to the specified chute
-            coinsInChutes[coinKindIndex] = coinsInChutes[coinKindIndex] + coins.Count;
-            vm.setCoinNum(coinsInChutes);
-
-        }
-
-        public void loadPops(int vmIndex, int popKindIndex, List<Pop> pops) {
-
-            vm = vmList[vmIndex];
             //create list for number of pops in each chute
             List<int> popsInChutes = new List<int>();
 
@@ -178,7 +162,47 @@ namespace seng301_asgn1 {
             for (int i = 0; i < vm.popChutes.Count; i++)
             {
                 popsInChutes.Add(0);
+                vm.popKinds.Add(new Pop(popNames[i]));
             }
+
+            vm.setCoinNum(coinsInChutes);
+            vm.setPopNum(popsInChutes);
+
+        }
+
+        public void loadCoins(int vmIndex, int coinKindIndex, List<Coin> coins) {
+
+            if (vmIndex > vmList.Count - 1)
+            {
+                throw new Exception("This vending machine doesn't exist!");
+            }
+
+            vm = vmList[vmIndex];
+
+            //test if there's invalid input for coinKindIndex
+            if (coinKindIndex > vm.coinChutes.Count || coinKindIndex < 0)
+            {
+                throw new Exception("Coin kind index cannot be greater than number of coin types nor negative.");
+            }
+
+            for (int i = 0; i < coins.Count; i++)
+            {
+                vm.coinChutes[coinKindIndex].Add(coins[i]);
+            }
+
+            //"add" coins to the specified chute
+            vm.coinsInChutes[coinKindIndex] = vm.coinsInChutes[coinKindIndex] + coins.Count;
+
+        }
+
+        public void loadPops(int vmIndex, int popKindIndex, List<Pop> pops) {
+
+            if (vmIndex > vmList.Count - 1)
+            {
+                throw new Exception("This vending machine doesn't exist!");
+            }
+
+            vm = vmList[vmIndex];
 
             //test if there's invalid input for popKindIndex
             if (popKindIndex > vm.popChutes.Count || popKindIndex < 0)
@@ -186,116 +210,272 @@ namespace seng301_asgn1 {
                 throw new Exception("Pop kind index cannot be greater than number of pop types nor negative.");
             }
 
+            for (int i = 0; i < pops.Count; i++)
+            {
+                vm.popChutes[popKindIndex].Add(pops[i]);
+            }
+
             //"add" pops to the specified chute
-            popsInChutes[popKindIndex] = popsInChutes[popKindIndex] + pops.Count;
-            vm.setPopNum(popsInChutes);
+            vm.popsInChutes[popKindIndex] = vm.popsInChutes[popKindIndex] + pops.Count;
 
         }
 
         public void insertCoin(int vmIndex, Coin coin) {
+
+            if (vmIndex > vmList.Count - 1)
+            {
+                throw new Exception("This vending machine doesn't exist!");
+            }
 
             vm = vmList[vmIndex];
 
             int i = 0;
 
             //test if coin value is accepted
-            while (coin.Value != vm.coinKinds[i] && i < vm.coinKinds.Count)
+            while (i < vm.coinKinds.Count)
             {
-                i++;
-                //if end of list reached
-                if (i == vm.coinKinds.Count)
+                if (coin.Value == vm.coinKinds[i])
                 {
-                    //replace with dispense later
-                    throw new Exception("Unacceptable coin!");
-                }
-            }
+                    //add accepted coin to credit
+                    vm.addCredit(coin.Value);
 
-            //add accepted coin to credit
-            vm.addCredit(coin.Value);
+                    break;
+                }
+
+                //if end of list reached and no matching coin value is found
+                if (i == vm.coinKinds.Count - 1)
+                {
+                    Coin unacceptable = new Coin(coin.Value);
+                    vm.change.Add(unacceptable);
+                }
+                i++;
+            }
         }
 
         public void pressButton(int vmIndex, int value) {
 
+            if (vmIndex > vmList.Count - 1)
+            {
+                throw new Exception("This vending machine doesn't exist!");
+            }
+
             vm = vmList[vmIndex];
 
-            if (value < 0 || value > vm.selectionButtonCount)
+            //Console.WriteLine(vm.credit);
+
+            if (value < 0 || value > vm.selectionButtonCount - 1)
             {
                 throw new Exception("Button index cannot be negative or bigger than number of avaliable buttons");
             }
 
-            //case where no change is needed
-            //check to see if there's one or more pop left in that chute
+            //case if there's one or more pop left in that chute
             if (vm.popsInChutes[value] > 0)
             {
                 //case where no change is needed
                 if (vm.credit == vm.popCosts[value])
                 {
-                    vm.popsInChutes[value] = vm.popsInChutes[value] - 1;
-                    vm.vendPop(vm.popChutes[value]);
+                    //vend the pop
+                    vm.vendPop(vm.popKinds[value], value);
+
+                    vm.moneyMade = vm.moneyMade + vm.credit;
+                    vm.credit = 0;
+
+                    //Coin totalChange = new Coin(0);
+                    //vm.change.Add(totalChange);
                 }
 
                 //case if change is needed
                 else if (vm.credit > vm.popCosts[value])
                 {
                     //vend the pop
-                    vm.popsInChutes[value] = vm.popsInChutes[value] - 1;
-                    vm.vendPop(vm.popChutes[value]);
+                    vm.vendPop(vm.popKinds[value], value);
 
-                    //create and use a sorted list to find change
-                    List<int> tempList = new List<int>(vm.coinKinds);
-                    tempList.Sort();
+                    int changeNeeded = vm.credit - vm.popCosts[value];
+                    int changeGiven = 0;
 
-                    int change = vm.credit - vm.popCosts[value];
-                    int changeTemp = 0;
-                    int maxTemp = 0;
-                    //int i = 0;
+                    //variable for holding the temporary smallest denominator
+                    //used to determine ending condition
+                    int tempMin = 100000000;
+                    int tempMinIndex = -1;
 
-                   /* for(int i = 0; i < tempList.Count; i++)
+                    do
                     {
-                        for(int j = 0; j < tempList.Count; i++)
-                        {
-                            changeTemp = tempList[i] + tempList[j] ;
+                        //variable for holding the temporary largest denominator
+                        int tempMax = 0;
+                        int tempMaxIndex = -1;
 
-                            if(changeTemp < change && changeTemp > maxTemp)
+                        for (int i = 0; i < vm.coinKinds.Count; i++)
+                        {
+                            if (vm.coinKinds[i] > tempMax && vm.coinKinds[i] <= changeNeeded && vm.coinsInChutes[i] > 0)
                             {
-                                maxTemp = changeTemp;
+                                tempMax = vm.coinKinds[i];
+                                tempMaxIndex = i;
+                                //Console.WriteLine("current max:" + tempMax);
+                            }
+
+                            if (vm.coinKinds[i] < changeNeeded && vm.coinKinds[i] < tempMin && vm.coinsInChutes[i] > 0)
+                            {
+                                tempMin = vm.coinKinds[i];
+                                tempMinIndex = i;
+                                //Console.WriteLine("current min:" + tempMax);
                             }
                         }
-                    }
 
-                    //find the largest coin type that's less or equal to change 
-                    while(tempList[i] < change && i < tempList.Count - 1)
+                        changeNeeded = changeNeeded - tempMax;
+                        if (tempMaxIndex >= 0)
+                        {
+                            changeGiven = changeGiven + vm.coinKinds[tempMaxIndex];
+                            //decrease the number of coin value in that chute by 1
+                            vm.coinsInChutes[tempMaxIndex] = vm.coinsInChutes[tempMaxIndex] - 1;
+                            //remove coin from the chute
+                            vm.coinChutes[tempMaxIndex].RemoveAt(0);
+                        }
+
+                        else
+                        {
+                            changeGiven = 0;
+                        }
+                        //Console.WriteLine("change needed:" + changeNeeded);
+                        //Console.WriteLine("current change:" + changeGiven);
+
+                        // case where all change chutes are empty
+                        if (tempMinIndex < 0)
+                        {
+                            break;
+                        }
+
+                    } while (vm.coinsInChutes[tempMinIndex] > 0 && changeNeeded - vm.coinKinds[tempMinIndex] >= 0);
+
+                    vm.moneyMade = vm.moneyMade + vm.credit;
+                    vm.credit = 0;
+
+                    if (changeGiven > 0)
                     {
-                        changeTemp = changeTemp + tempList[i];
-                        if(changeTemp > change && tempList[i] > changeTemp)
-                        {
-
-                        }
-                        i++;
-                        if(tempList[i] == change || changeTemp == change)
-                        {
-                            vm.change = change;
-                        }
-
-                    }*/
-
-
+                        Coin totalChange = new Coin(changeGiven);
+                        vm.change.Add(totalChange);
+                    }
+                    //Console.WriteLine("total change: " + changeGiven);
                 }
 
+                //case credit not enough to buy pop
+                else
+                {
+                    int remainder = vm.popCosts[value] - vm.credit;
+                    //Console.WriteLine("Not enough credit. Please Insert "+ remainder + " more");
+                }
+
+            }
+
+            //if the pop is sold out
+            else
+            {
+                //Console.WriteLine("Sold out! Sorry :( ");
             }
         }
 
         public List<Deliverable> extractFromDeliveryChute(int vmIndex) {
-            // TODO: Implement
-            return new List<Deliverable>();
+
+            if (vmIndex > vmList.Count - 1)
+            {
+                throw new Exception("This vending machine doesn't exist!");
+            }
+
+            vm = vmList[vmIndex];
+
+            List<List<Deliverable>> sold = new List<List<Deliverable>>();
+
+            if(vm.soldPop.Count > 0)
+            {
+                sold.Add(vm.soldPop.ToList<Deliverable>());
+            }
+
+            if (vm.change.Count > 0)
+            {
+                int totalChange = 0;
+
+                //add up all the change inside the delivery chute
+                for (int i = 0; i < vm.change.Count; i++)
+                {
+                    totalChange = totalChange + vm.change[i].Value;
+                    //Console.WriteLine(totalChange);
+                }
+
+                //place the sum of all change in a new list
+                List<Coin> change = new List<Coin>();
+                change.Add(new Coin(totalChange));
+
+                sold.Add(change.ToList<Deliverable>());
+            }
+
+            //clear change list
+            vm.change = new List<Coin>();
+            //clear soldPop list
+            vm.soldPop = new List<Pop>();
+
+            List<Deliverable> deliveryChute = sold.SelectMany(x => x).ToList();
+
+            return deliveryChute;
         }
 
         public List<IList> unloadVendingMachine(int vmIndex) {
-            // TODO: Implement
+
+            if (vmIndex > vmList.Count - 1)
+            {
+                throw new Exception("This vending machine doesn't exist!");
+            }
+
+            vm = vmList[vmIndex];
+
+            List<Coin> changeUnload = new List<Coin>();
+
+            //calculate total amount of change left over if there's change left over
+            int totalChangeUnload = 0;
+
+            for (int i = 0; i < vm.coinChutes.Count; i++)
+            {
+                if (vm.coinsInChutes[i] > 0)
+                {
+                    for (int j = 0; j < vm.coinsInChutes[i]; j++)
+                    {
+                        totalChangeUnload = totalChangeUnload + vm.coinChutes[i][j].Value;
+                        //Console.WriteLine(totalChangeUnload);
+                    }
+                }
+            }
+
+            if (totalChangeUnload > 0)
+            {
+                changeUnload.Add(new Coin(totalChangeUnload));
+            }
+
+            List<Coin> profitUnload = new List<Coin>();
+            //if some money was made
+            if (vm.moneyMade > 0)
+            {
+                profitUnload.Add(new Coin(vm.moneyMade));
+            }
+
+            List<Pop> popUnload = new List<Pop>();
+
+            //int k = 0;
+
+            for (int i = 0; i < vm.popChutes.Count; i++)
+            {
+                if (vm.popsInChutes[i] > 0)
+                {
+                    for (int j = 0; j < vm.popsInChutes[i]; j++)
+                    {
+                        popUnload.Add(vm.popChutes[i][j]);
+                        //Console.WriteLine(popUnload[k].Name);
+                        //k++;
+                    }
+                }
+            }
+
             return new List<IList>() {
-                new List<Coin>(),
-                new List<Coin>(),
-                new List<Pop>() };
+                new List<Coin>(changeUnload),
+                new List<Coin>(profitUnload),
+                new List<Pop>(popUnload) };
             }
     }
 }

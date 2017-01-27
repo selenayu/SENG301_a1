@@ -8,26 +8,31 @@ namespace Frontend1
     public class VendingMachine
     {
         public List<int> coinKinds;
+        public List<Pop> popKinds;
         public int selectionButtonCount;
         public List<int> popCosts;
-        public List<int> coinChutes;
+        public List<List<Coin>> coinChutes;
         public List<int> coinsInChutes;
-        public List<String> popChutes;
+        public List<List<Pop>> popChutes;
         public List<int> popsInChutes;
-        public List<String> soldPop;
-        public int change;
+        public List<Pop> soldPop;
+        public List<Coin> change;
         public int credit;
+        public int moneyMade;
 
         public VendingMachine(List<int> coinKinds, int selectionButtonCount)
         {
             this.coinKinds = coinKinds;
             this.selectionButtonCount = selectionButtonCount;
-            soldPop = new List<string>();
+            popKinds = new List<Pop>();
+            soldPop = new List<Pop>();
+            change = new List<Coin>();
             credit = 0;
+            moneyMade = 0;
         }
 
         //set the coin types to their specific chutes
-        public void setCoinChutes(List<int> coinChutes)
+        public void setCoinChutes(List<List<Coin>> coinChutes)
         {
             this.coinChutes = coinChutes;
         }
@@ -45,7 +50,7 @@ namespace Frontend1
         }
 
         //set the pop types to their specific chutes
-        public void setPopChutes(List<String> popChutes)
+        public void setPopChutes(List<List<Pop>> popChutes)
         {
             this.popChutes = popChutes;
         }
@@ -56,10 +61,13 @@ namespace Frontend1
             this.popsInChutes = popsInChutes;
         }
 
-        //add a pop to the list of pop sold but not yet extracted
-        public void vendPop(String popName)
+        //add a pop to the list of pop sold
+        //remove the pop from the its original chute
+        public void vendPop(Pop popName, int value)
         {
             soldPop.Add(popName);
+            popChutes[value].RemoveAt(0);
+            popsInChutes[value] = popsInChutes[value] - 1;
         }
 
         //add to credit

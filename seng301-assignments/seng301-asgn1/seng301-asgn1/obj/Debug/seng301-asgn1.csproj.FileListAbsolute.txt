@@ -19,3 +19,10 @@ C:\Users\OWNER\Desktop\seng301_a1-master\seng301-assignments\seng301-asgn1\seng3
 C:\Users\OWNER\Desktop\seng301_a1-master\seng301-assignments\seng301-asgn1\seng301-asgn1\obj\Debug\seng301-asgn1.exe
 C:\Users\OWNER\Desktop\seng301_a1-master\seng301-assignments\seng301-asgn1\seng301-asgn1\obj\Debug\seng301-asgn1.pdb
 C:\Users\OWNER\Desktop\seng301_a1-master\seng301-assignments\seng301-asgn1\seng301-asgn1\obj\Debug\seng301-asgn1.csprojResolveAssemblyReference.cache
+U:\seng301\assignment1\seng301-assignments\seng301-asgn1\seng301-asgn1\bin\Debug\seng301-asgn1.exe.config
+U:\seng301\assignment1\seng301-assignments\seng301-asgn1\seng301-asgn1\obj\Debug\seng301-asgn1.exe
+U:\seng301\assignment1\seng301-assignments\seng301-asgn1\seng301-asgn1\obj\Debug\seng301-asgn1.pdb
+U:\seng301\assignment1\seng301-assignments\seng301-asgn1\seng301-asgn1\bin\Debug\seng301-asgn1.exe
+U:\seng301\assignment1\seng301-assignments\seng301-asgn1\seng301-asgn1\bin\Debug\seng301-asgn1.pdb
+U:\seng301\assignment1\seng301-assignments\seng301-asgn1\seng301-asgn1\bin\Debug\grammatica-1.6.dll
+U:\seng301\assignment1\seng301-assignments\seng301-asgn1\seng301-asgn1\obj\Debug\seng301-asgn1.csprojResolveAssemblyReference.cache
