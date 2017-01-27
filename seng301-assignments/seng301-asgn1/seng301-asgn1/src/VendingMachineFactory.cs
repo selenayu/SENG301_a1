@@ -472,6 +472,33 @@ namespace seng301_asgn1 {
                 }
             }
 
+            //clear and initialize all fields extracted from the vending machine
+            vm.coinChutes = new List<List<Coin>>();
+            for (int i = 0; i < vm.coinKinds.Count; i++)
+            {
+                List<Coin> sublist = new List<Coin>();
+                vm.coinChutes.Add(sublist);
+            }
+            vm.coinsInChutes = new List<int>();
+            for (int i = 0; i < vm.coinChutes.Count; i++)
+            {
+                vm.coinsInChutes.Add(0);
+            }
+
+            vm.popChutes = new List<List<Pop>>();
+            for (int i = 0; i < vm.popKinds.Count; i++)
+            {
+                List<Pop> sublist = new List<Pop>();
+                vm.popChutes.Add(sublist);
+            }
+            vm.popsInChutes = new List<int>();
+            for (int i = 0; i < vm.popChutes.Count; i++)
+            {
+                vm.popsInChutes.Add(0);
+            }
+
+            vm.moneyMade = 0;
+
             return new List<IList>() {
                 new List<Coin>(changeUnload),
                 new List<Coin>(profitUnload),
